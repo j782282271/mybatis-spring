@@ -1,0 +1,33 @@
+spring配置如下两个bean：
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- <property name="configLocation" value="classpath:mybatis-config.xml"></property> -->
+		<property name="dataSource" ref="dataSource" />
+		<!-- 自动扫描entity目录, 省掉Configuration.xml里的手工配置 -->
+		<property name="typeAliasesPackage" value="com.tgou.*.entity" />
+		<!-- 显式指定Mapper文件位置 -->
+		<property name="mapperLocations" value="classpath:mybatis/**/*Mapper.xml" />
+		<property name="plugins">
+			<array>
+				<ref bean="pageInterceptor"/>
+			</array>
+		</property>
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	    <!-- Mapper.class包位置 -->
+		<property name="basePackage" value="com.tgou.*.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+
+SqlSessionFactoryBean用来指定Mapper.xml位置，用XMLMapperBuilder解析Mapper.xml并向configuration注册Mapper的动态代理类
+（configuration.addMapper(MapperJavaType.class)）
+MapperScannerConfigurer用来扫描basePackage，将其下的Mapper.class注册到spring bean工厂中，步骤如下：
+1）bean：SqlSessionFactoryBean实际上就是SqlSessionFactory的bean该bean用来构造MapperScannerConfigurer
+2）MapperScannerConfigurer.postProcessBeanDefinitionRegistry,中会scanner= new ClassPathMapperScanner();
+3）scanner.scan()方法会调用ClassPathMapperScanner.doScan(),其中会扫描basePackage下的所有mapper.class注册到 bean工厂中
+并将mapper.class在bean工厂的类型指定为MapperFactoryBean（注意是一种FactoryBean），
+4）每个MapperFactoryBean实例都会被注入SqlSessionFactory，注入SqlSessionFactory的是同事还会创建
+this.sqlSession = new SqlSessionTemplate(sqlSessionFactory); SqlSessionTemplate使用spring管理Transaction和SqlSession，一个线程一个实例SqlSession
+保证SqlSessionTemplate是线程安全的
+5）MapperFactoryBean.getObjectType方法返回当前Mapper.class（this.mapperInterface）
+其getObject方法为this.sqlSession.getMapper(this.mapperInterface);
