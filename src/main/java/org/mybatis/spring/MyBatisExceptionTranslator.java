@@ -1,12 +1,12 @@
 /**
  * Copyright 2010-2019 the original author or authors.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,10 +15,6 @@
  */
 package org.mybatis.spring;
 
-import java.sql.SQLException;
-
-import javax.sql.DataSource;
-
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.PersistenceExceptionTranslator;
@@ -26,9 +22,12 @@ import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.jdbc.support.SQLExceptionTranslator;
 import org.springframework.transaction.TransactionException;
 
+import javax.sql.DataSource;
+import java.sql.SQLException;
+
 /**
  * Default exception translator.
- *
+ * <p>
  * Translates MyBatis SqlSession returned exception into a Spring {@code DataAccessException} using Spring's
  * {@code SQLExceptionTranslator} Can load {@code SQLExceptionTranslator} eagerly or when the first exception is
  * translated.
@@ -44,11 +43,9 @@ public class MyBatisExceptionTranslator implements PersistenceExceptionTranslato
   /**
    * Creates a new {@code DataAccessExceptionTranslator} instance.
    *
-   * @param dataSource
-   *          DataSource to use to find metadata and establish which error codes are usable.
-   * @param exceptionTranslatorLazyInit
-   *          if true, the translator instantiates internal stuff only the first time will have the need to translate
-   *          exceptions.
+   * @param dataSource                  DataSource to use to find metadata and establish which error codes are usable.
+   * @param exceptionTranslatorLazyInit if true, the translator instantiates internal stuff only the first time will have the need to translate
+   *                                    exceptions.
    */
   public MyBatisExceptionTranslator(DataSource dataSource, boolean exceptionTranslatorLazyInit) {
     this.dataSource = dataSource;
@@ -59,7 +56,7 @@ public class MyBatisExceptionTranslator implements PersistenceExceptionTranslato
   }
 
   /**
-   * {@inheritDoc}
+   * 将RuntimeException转换为DataAccessException
    */
   @Override
   public DataAccessException translateExceptionIfPossible(RuntimeException e) {

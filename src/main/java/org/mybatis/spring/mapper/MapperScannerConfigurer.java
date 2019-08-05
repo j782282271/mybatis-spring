@@ -1,12 +1,12 @@
 /**
  * Copyright 2010-2019 the original author or authors.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,12 +14,6 @@
  * limitations under the License.
  */
 package org.mybatis.spring.mapper;
-
-import static org.springframework.util.Assert.notNull;
-
-import java.lang.annotation.Annotation;
-import java.util.Map;
-import java.util.Optional;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -40,6 +34,12 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
+
+import java.lang.annotation.Annotation;
+import java.util.Map;
+import java.util.Optional;
+
+import static org.springframework.util.Assert.notNull;
 
 /**
  * BeanDefinitionRegistryPostProcessor that searches recursively starting from a base package for interfaces and
@@ -89,7 +89,7 @@ import org.springframework.util.StringUtils;
  * @see ClassPathMapperScanner
  */
 public class MapperScannerConfigurer
-    implements BeanDefinitionRegistryPostProcessor, InitializingBean, ApplicationContextAware, BeanNameAware {
+  implements BeanDefinitionRegistryPostProcessor, InitializingBean, ApplicationContextAware, BeanNameAware {
 
   private String basePackage;
 
@@ -191,7 +191,7 @@ public class MapperScannerConfigurer
    * Specifies which {@code SqlSessionTemplate} to use in the case that there is more than one in the spring context.
    * Usually this is only needed when you have more than one datasource.
    * <p>
-   * 
+   *
    * @deprecated Use {@link #setSqlSessionTemplateBeanName(String)} instead
    *
    * @param sqlSessionTemplate
@@ -222,7 +222,7 @@ public class MapperScannerConfigurer
    * Specifies which {@code SqlSessionFactory} to use in the case that there is more than one in the spring context.
    * Usually this is only needed when you have more than one datasource.
    * <p>
-   * 
+   *
    * @deprecated Use {@link #setSqlSessionFactoryBeanName(String)} instead.
    *
    * @param sqlSessionFactory
@@ -253,7 +253,7 @@ public class MapperScannerConfigurer
    * Specifies a flag that whether execute a property placeholder processing or not.
    * <p>
    * The default is {@literal false}. This means that a property placeholder processing does not execute.
-   * 
+   *
    * @since 1.1.1
    *
    * @param processPropertyPlaceHolders
@@ -329,7 +329,7 @@ public class MapperScannerConfigurer
 
   /**
    * {@inheritDoc}
-   * 
+   *
    * @since 1.0.2
    */
   @Override
@@ -354,7 +354,7 @@ public class MapperScannerConfigurer
     }
     scanner.registerFilters();
     scanner.scan(
-        StringUtils.tokenizeToStringArray(this.basePackage, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS));
+      StringUtils.tokenizeToStringArray(this.basePackage, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS));
   }
 
   /*
@@ -368,7 +368,7 @@ public class MapperScannerConfigurer
 
     if (!prcs.isEmpty() && applicationContext instanceof ConfigurableApplicationContext) {
       BeanDefinition mapperScannerBean = ((ConfigurableApplicationContext) applicationContext).getBeanFactory()
-          .getBeanDefinition(beanName);
+        .getBeanDefinition(beanName);
 
       // PropertyResourceConfigurer does not expose any methods to explicitly perform
       // property placeholder substitution. Instead, create a BeanFactory that just
@@ -389,11 +389,11 @@ public class MapperScannerConfigurer
     }
     this.basePackage = Optional.ofNullable(this.basePackage).map(getEnvironment()::resolvePlaceholders).orElse(null);
     this.sqlSessionFactoryBeanName = Optional.ofNullable(this.sqlSessionFactoryBeanName)
-        .map(getEnvironment()::resolvePlaceholders).orElse(null);
+      .map(getEnvironment()::resolvePlaceholders).orElse(null);
     this.sqlSessionTemplateBeanName = Optional.ofNullable(this.sqlSessionTemplateBeanName)
-        .map(getEnvironment()::resolvePlaceholders).orElse(null);
+      .map(getEnvironment()::resolvePlaceholders).orElse(null);
     this.lazyInitialization = Optional.ofNullable(this.lazyInitialization).map(getEnvironment()::resolvePlaceholders)
-        .orElse(null);
+      .orElse(null);
   }
 
   private Environment getEnvironment() {
